@@ -10,10 +10,10 @@ import java.sql.Statement;
  * This class provides connection to the database
  * @author Jacob Jørgensen */
 public class Connector {
-	private final String HOST     = "0.0.0.0";
-	private final int    PORT     = 3306;
+	private final String HOST     = "130.225.170.204";
+	private final int    PORT     = 4420;
 	private final String DATABASE = "koreskole";
-	private final String USERNAME = "root"; 
+	private final String USERNAME = "root";
 	private final String PASSWORD = "kodekode";
 	private Connection connection;
 
