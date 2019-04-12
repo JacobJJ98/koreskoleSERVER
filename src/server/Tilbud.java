@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Tilbud extends UnicastRemoteObject implements Serializable {
+
+	static final long serialVersionUID = 1234567890;
+
 	public Tilbud() throws Exception {
 		// TODO Auto-generated constructor stub
 	}

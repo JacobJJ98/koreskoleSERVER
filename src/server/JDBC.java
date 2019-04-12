@@ -187,7 +187,7 @@ public class JDBC {
 
 
 
-	public void sletKøreskole(String adminBrugernavn, String køreskole_id) {
+	public int sletKøreskole(String køreskole_id) {
 
 		String s = "DELETE FROM koreskoler WHERE koreskole_id = ?;";
 		PreparedStatement ps;
@@ -199,9 +199,7 @@ public class JDBC {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("update(s) "+i+" køreskole slettet (bruger:"+adminBrugernavn+")"+"(køreskole id:"+køreskole_id+")");
-
+		return i;
 	}
 
 	public ArrayList<Tilbud> getTilbud(String brugernavn) {
