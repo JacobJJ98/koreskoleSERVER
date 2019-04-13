@@ -145,7 +145,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 		int slettet = 0;
 		String ejer = "";
 		if (logInd(brugernavn, kodeord)){
-			for (int j = 0; j < tilbudID.length-1; j++) {
+			for (int j = 0; j < tilbudID.length; j++) {
 			ejer=jdbc.getTilbudFraId(tilbudID[j]).koreskole_id;
 			if (ejer.equals(brugernavn)){
 					int i=jdbc.sletTilbud(tilbudID[j]);
@@ -176,15 +176,16 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
 
 	@Override
-	public Køreskole getKøreskole(String brugernavn, String kodeord) throws RemoteException {
+	public String getKøreskole(String brugernavn, String kodeord) throws RemoteException {
 		int i = 0;
 		Køreskole k = null;
 		String ejer = "";
 		if (logInd(brugernavn, kodeord)){
 			k = jdbc.getKøreskole(brugernavn);
-			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter informationer om sin køreskole: row(s) affected:" + i);
+			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter informationer om sin køreskole: row(s) affected:" + k.id);
 		}
-		return k;
+		System.out.println(gson.toJson(k));
+		return gson.toJson(k);
 	}
 
 
@@ -196,7 +197,9 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 			//køreskole.mail=ba.hentBrugerOffentligt(brugernavn).email;
 			i=jdbc.opretkøreskole(køreskole);
 			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" opretter køreskole: row(s) affected:" + i);
-			return true;
+			if (i>=1){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -219,7 +222,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
 	@Override
 	public String getAlleTilbud() throws RemoteException { //anonyme brugere skal også kunne hente alle tilbud og kigge på dem.
-		ArrayList<Tilbud> tilbud = jdbc.getAlleTilbud();
+		ArrayList<TilbudTilBrugere> tilbud = jdbc.getAlleTilbud();
 		String str = gson.toJson(tilbud);
 		System.out.println(sdf.format(new Date())+" alle tilbud hentet. antal tilbud:"+tilbud.size());
 		printJson(str);
@@ -228,9 +231,12 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
 	@Override
 	public String getTilbudMellemPrisFraPostnummer(int postnummer, int minimumPris, int maximumPris) throws RemoteException {
-		jdbc.getTilbudMellemPrisFraPostnummer(postnummer, minimumPris, maximumPris);
 
-		return null;
+		ArrayList<TilbudTilBrugere> tilbud = jdbc.getTilbudMellemPrisFraPostnummer(postnummer, minimumPris, maximumPris);
+		String str = gson.toJson(tilbud);
+		System.out.println(sdf.format(new Date())+" tilbud hentet fra postnummer:"+postnummer+". under kr:"+maximumPris+". antal tilbud:"+tilbud.size());
+		printJson(str);
+		return str;
 	}
 
 	@Override

@@ -55,7 +55,9 @@ public class JDBC {
 			PreparedStatement p = con.prepareStatement(s);
 			p.setString(1, id);
 			rs = p.executeQuery();
-			k = køreskoleBuilder(rs);
+			while (rs.next()){
+				k = køreskoleBuilder(rs);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -196,7 +198,7 @@ public class JDBC {
 
 		try {
 			while(rs.next()) {
-				Tilbud t = tilbudBuilder(rs, 0);
+				Tilbud t = tilbudBuilder(rs, false);
 				tilbud.add(t);
 			}
 		} catch (Exception e) {
@@ -206,16 +208,16 @@ public class JDBC {
 
 	}
 
-	public ArrayList<Tilbud> getAlleTilbud() {
+	public ArrayList<TilbudTilBrugere> getAlleTilbud() {
 
-		String s = "SELECT * FROM tilbud;";
+		String s = "SELECT * FROM tilbud t natural join koreskoler k;";
 		ResultSet rs = null;
-		ArrayList<Tilbud> tilbud = new ArrayList<Tilbud>();
+		ArrayList<TilbudTilBrugere> tilbud = new ArrayList<TilbudTilBrugere>();
 		try {
 			PreparedStatement p = con.prepareStatement(s);
 			rs = p.executeQuery();
 			while(rs.next()) {
-				Tilbud t = tilbudBuilder(rs, 0);
+				TilbudTilBrugere t = tilbudTilBrugereBuilder(rs);
 				tilbud.add(t);
 			}
 		} catch (Exception e) {
@@ -252,7 +254,9 @@ public class JDBC {
 			PreparedStatement p = con.prepareStatement(s);
 			p.setInt(1, id);
 			rs = p.executeQuery();
-			t = tilbudBuilder(rs, 0);
+			while (rs.next()) {
+				t = tilbudBuilder(rs, false);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -284,13 +288,13 @@ public class JDBC {
 
 	public ArrayList<TilbudTilBrugere> getTilbudMellemPrisFraPostnummer(int postnummer, int minimumPris, int maximumPris){
 		ArrayList<TilbudTilBrugere> tilbud = new ArrayList<TilbudTilBrugere>();
-		String s = "SELECT * FROM tilbud t natural join koreskoler k where k.postnummer=? and ? ?;";
+		String s = "SELECT * FROM tilbud t natural join koreskoler k where k.postnummer=? and t.pris < ?;";
 		ResultSet rs = null;
 		try {
 			PreparedStatement p = con.prepareStatement(s);
 			p.setInt(1, postnummer);
-			p.setInt(2, minimumPris);
-			p.setInt(3, maximumPris);
+			//p.setInt(2, minimumPris);
+			p.setInt(2, maximumPris);
 			rs = p.executeQuery();
 			while (rs.next()){
 				TilbudTilBrugere tilbudTilBrugere = tilbudTilBrugereBuilder(rs);
@@ -306,28 +310,33 @@ public class JDBC {
 
 
 
-	private Tilbud tilbudBuilder(ResultSet rs, int add){
+	private Tilbud tilbudBuilder(ResultSet rs, boolean tilKunder){
 		try {
 			Tilbud t = new Tilbud();
-			t.id =rs.getInt(1+add);
-			t.koreskole_id=rs.getString(2+add);
-			t.pris = rs.getInt(3+add);
-			t.korekort_type = rs.getString(4+add);
-			t.lynkursus = rs.getInt(5+add);
-			t.bilmarke = rs.getString(6+add);
-			t.bilstørrelse = rs.getString(7+add);
-			t.køn = rs.getString(8+add);
+			if (!tilKunder){
+				t.id =rs.getInt(1);
+				t.koreskole_id=rs.getString(2);
+			} else {
+				t.id=0;
+				t.koreskole_id="tom";
+			}
+			t.pris = rs.getInt(3);
+			t.korekort_type = rs.getString(4);
+			t.lynkursus = rs.getInt(5);
+			t.bilmarke = rs.getString(6);
+			t.bilstørrelse = rs.getString(7);
+			t.køn = rs.getString(8);
 
 			//-----------------dage------------------//
 			t.tilgængeligeDage = new TilgængeligeDage();
-			t.tilgængeligeDage.tilgængelig_mandag = rs.getInt(9+add);
-			t.tilgængeligeDage.tilgængelig_tirsdag = rs.getInt(10+add);
-			t.tilgængeligeDage.tilgængelig_onsdag = rs.getInt(11+add);
-			t.tilgængeligeDage.tilgængelig_torsdag = rs.getInt(12+add);
-			t.tilgængeligeDage.tilgængelig_fredag = rs.getInt(13+add);
-			t.tilgængeligeDage.tilgængelig_lørdag = rs.getInt(14+add);
-			t.tilgængeligeDage.tilgængelig_søndag = rs.getInt(15+add);
-			t.beskrivelse=rs.getString(16+add);
+			t.tilgængeligeDage.tilgængelig_mandag = rs.getInt(9);
+			t.tilgængeligeDage.tilgængelig_tirsdag = rs.getInt(10);
+			t.tilgængeligeDage.tilgængelig_onsdag = rs.getInt(11);
+			t.tilgængeligeDage.tilgængelig_torsdag = rs.getInt(12);
+			t.tilgængeligeDage.tilgængelig_fredag = rs.getInt(13);
+			t.tilgængeligeDage.tilgængelig_lørdag = rs.getInt(14);
+			t.tilgængeligeDage.tilgængelig_søndag = rs.getInt(15);
+			t.beskrivelse=rs.getString(16);
 			return t;
 		} catch (Exception e){
 			e.printStackTrace();
@@ -354,8 +363,13 @@ public class JDBC {
 	}
 
 	private TilbudTilBrugere tilbudTilBrugereBuilder(ResultSet rs) {
-		TilbudTilBrugere tilbudTilBrugere = new TilbudTilBrugere();
-		tilbudTilBrugere.tilbud=tilbudBuilder(rs, 1);
+		TilbudTilBrugere tilbudTilBrugere = null;
+		try {
+			tilbudTilBrugere = new TilbudTilBrugere();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		tilbudTilBrugere.tilbud=tilbudBuilder(rs, true);
 		Køreskole k;
 		try {
 			k = new Køreskole();
