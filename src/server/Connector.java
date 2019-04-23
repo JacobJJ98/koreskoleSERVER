@@ -30,7 +30,24 @@ public class Connector {
 	}
 
 	public Connection getConnection(){
-		return connection;
+		try {
+			if (!connection.isClosed())	{
+				return connection;
+			} else {
+				String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
+				connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+				return connection;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
+			try {
+				connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return connection;
+		}
 	}
 
 	/**
