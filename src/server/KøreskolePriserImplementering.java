@@ -15,6 +15,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Implementering af interface.
+ * laver forespørgsler til bruger adminstrationsmodulet via rmi.
+ * sender JSON til REST interface
+ * logger tidspunkt og id for alle metoder.
+ *
+ * @author Alexander Kjeldsen */
+
 
 public class KøreskolePriserImplementering extends UnicastRemoteObject implements KøreskolePriserInterface {
 

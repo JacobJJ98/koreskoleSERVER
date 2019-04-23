@@ -3,6 +3,9 @@ package server;
 import java.rmi.Naming;
 import java.sql.Connection;
 import java.sql.ResultSet;
+/**
+ * main metode
+ * @author Alexander Kjeldsen */
 
 public class Main {
 

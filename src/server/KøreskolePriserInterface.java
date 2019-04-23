@@ -1,5 +1,8 @@
 package server;
 
+/**
+ * interface implementeres også hos klienten.
+ * @author Alexander Kjeldsen */
 
 public interface KøreskolePriserInterface extends java.rmi.Remote {
 	

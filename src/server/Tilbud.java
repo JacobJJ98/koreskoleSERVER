@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Tilbud extends UnicastRemoteObject implements Serializable {
+	/**
+	 * objekt til JSON dataoverførsel
+	 * @author Alexander Kjeldsen */
 
 	static final long serialVersionUID = 1234567890;
 

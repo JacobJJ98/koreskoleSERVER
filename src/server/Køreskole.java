@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+/**
+ * objekt til JSON dataoverførsel
+ * @author Alexander Kjeldsen */
+
 public class Køreskole extends  UnicastRemoteObject implements Serializable {
 	public Køreskole() throws Exception {
 		// TODO Auto-generated constructor stub

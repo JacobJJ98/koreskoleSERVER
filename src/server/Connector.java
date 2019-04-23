@@ -8,7 +8,8 @@ import java.sql.Statement;
 
 /** 
  * This class provides connection to the database
- * @author Jacob Jørgensen */
+ * @author Jacob Jørgensen
+ * @author Alexander Kjeldsen */
 public class Connector {
 	private final String HOST     = "130.225.170.204";
 	private final int    PORT     = 4420;
