@@ -11,7 +11,7 @@ import java.sql.Statement;
  * @author Jacob Jørgensen
  * @author Alexander Kjeldsen */
 public class Connector {
-	private final String HOST     = "130.225.170.204";
+	private final String HOST     = "dist.saluton.dk";
 	private final int    PORT     = 4420;
 	private final String DATABASE = "koreskole";
 	private final String USERNAME = "root";

@@ -15,7 +15,7 @@ public class Main {
 			java.rmi.registry.LocateRegistry.createRegistry(5478); // start i server-JVM
 			KøreskolePriserImplementering ki = new KøreskolePriserImplementering();
 //			Naming.rebind("rmi://localhost:1235/koereskolepriser", ki);
-			Naming.rebind("rmi://130.225.170.204:5478/koereskolepriser", ki);
+			Naming.rebind("rmi://dist.saluton.dk:5478/koereskolepriser", ki);
 
 			System.out.println("serveren er startet");
 		} catch (Exception e) {
