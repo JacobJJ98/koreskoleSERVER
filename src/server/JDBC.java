@@ -1,35 +1,33 @@
 package server;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
+
+import static server.DataSource.getConnection;
 
 public class JDBC {
-	private Connector c;
-	private Connection con;
+	//private Connector c;
+
 
 	public JDBC() {
-		this.c = new Connector();
-		this.con = c.getConnection();
+//		this.c = new Connector();
+
 	}
 
-	public void usekoreskoleDatabase() {
-		try {
-			String s = "use koreskole";
-			PreparedStatement p = con.prepareStatement(s);
-			p.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public int opretkøreskole(Køreskole køreskole) {
 		String s = "INSERT INTO koreskoler(koreskole_id, koreskolenavn, adresse, postnummer, telefonnummer, mail) values (?, ?, ?, ?, ?, ?);";
 		int updated = 0;
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s); //new Connector().getConnection().prepareStatement(s); //con.prepareStatement(s);
+
 			p.setString(1, køreskole.id);
 			p.setString(2, køreskole.navn);
 			p.setString(3, køreskole.adresse);
@@ -37,9 +35,12 @@ public class JDBC {
 			p.setInt(5, køreskole.telefonnummer);
 			p.setString(6, køreskole.mail);
 			updated = p.executeUpdate();
+			p.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+
 		}
 
 		return updated;
@@ -52,7 +53,7 @@ public class JDBC {
 		Køreskole k=null;
 		try {
 			k = new Køreskole();
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			p.setString(1, id);
 			rs = p.executeQuery();
 			while (rs.next()){
@@ -61,6 +62,7 @@ public class JDBC {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 
 		return k;
 
@@ -76,7 +78,7 @@ public class JDBC {
 		int i = 0;
 
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			p.setString(1, t.koreskole_id);
 			p.setInt(2, t.pris);
 			p.setString(3, t.korekort_type);
@@ -111,7 +113,7 @@ public class JDBC {
 		PreparedStatement ps;
 		int i = 0;
 		try {
-			ps = con.prepareStatement(s);
+			ps = getConnection().prepareStatement(s);
 			ps.setInt(1, tilbud_id);
 			i = ps.executeUpdate();
 		} catch (Exception e) {
@@ -134,7 +136,7 @@ public class JDBC {
 		PreparedStatement ps;
 		int i = 0;
 		try {
-			ps = con.prepareStatement(s);
+			ps = getConnection().prepareStatement(s);
 			//-----------------om tilbuddet----------
 			ps.setInt(1, nytTilbud.pris);
 			ps.setString(2, nytTilbud.korekort_type);
@@ -174,7 +176,7 @@ public class JDBC {
 		PreparedStatement ps;
 		int i = 0;
 		try {
-			ps = con.prepareStatement(s);
+			ps = getConnection().prepareStatement(s);
 			ps.setString(1, køreskole_id);
 			i = ps.executeUpdate();
 		} catch (Exception e) {
@@ -189,7 +191,7 @@ public class JDBC {
 		ResultSet rs = null;
 		ArrayList<Tilbud> tilbud = new ArrayList<Tilbud>();
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = DataSource.getConnection().prepareStatement(s);
 			p.setString(1, brugernavn);
 			rs = p.executeQuery();
 		} catch (Exception e) {
@@ -214,7 +216,7 @@ public class JDBC {
 		ResultSet rs = null;
 		ArrayList<TilbudTilBrugere> tilbud = new ArrayList<TilbudTilBrugere>();
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			rs = p.executeQuery();
 			while(rs.next()) {
 				TilbudTilBrugere t = tilbudTilBrugereBuilder(rs);
@@ -232,7 +234,7 @@ public class JDBC {
 		ResultSet rs = null;
 		ArrayList<Køreskole> køreskoler = new ArrayList<Køreskole>();
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = DataSource.getConnection().prepareStatement(s);
 			rs = p.executeQuery();
 
 			while(rs.next()) {
@@ -251,7 +253,7 @@ public class JDBC {
 		ResultSet rs ;
 		Tilbud t = null;
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			p.setInt(1, id);
 			rs = p.executeQuery();
 			while (rs.next()) {
@@ -271,7 +273,7 @@ public class JDBC {
 		String s = "SELECT * FROM tilbud t natural join koreskoler k where k.postnummer=?;";
 		ResultSet rs = null;
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			p.setInt(1, postnummer);
 			rs = p.executeQuery();
 			while (rs.next()){
@@ -291,7 +293,7 @@ public class JDBC {
 		String s = "SELECT * FROM tilbud t natural join koreskoler k where k.postnummer=? and t.pris < ?;";
 		ResultSet rs = null;
 		try {
-			PreparedStatement p = con.prepareStatement(s);
+			PreparedStatement p = getConnection().prepareStatement(s);
 			p.setInt(1, postnummer);
 			//p.setInt(2, minimumPris);
 			p.setInt(2, maximumPris);
