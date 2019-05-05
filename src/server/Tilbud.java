@@ -1,7 +1,6 @@
 package server;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Tilbud extends UnicastRemoteObject implements Serializable {
@@ -20,10 +19,10 @@ public class Tilbud extends UnicastRemoteObject implements Serializable {
 	String korekort_type;
 	int lynkursus;
 	String bilmarke;
-	String bilstørrelse;
-	String køn;
+	String bilstorrelse;
+	String kon;
 	String beskrivelse;
-	TilgængeligeDage tilgængeligeDage;
+	TilgangeligeDage tilgangeligeDage;
 	int id;
 	
 	@Override
@@ -34,8 +33,8 @@ public class Tilbud extends UnicastRemoteObject implements Serializable {
 		s+="\nkørekort: type: "+korekort_type;
 		s+="\nlynkursus: "+lynkursus;
 		s+="\nbilmærke: "+bilmarke;
-		s+="\nbilstørrelse: "+bilstørrelse;
-		s+="\nkøn: "+køn;
+		s+="\nbilstorrelse: "+ bilstorrelse;
+		s+="\nkon: "+ kon;
 		s+="\nbeskrivelse: "+beskrivelse;
 		
 		return s;

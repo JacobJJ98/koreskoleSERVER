@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * objekt til JSON dataoverførsel
  * @author Alexander Kjeldsen */
 
-public class Køreskole extends  UnicastRemoteObject implements Serializable {
-	public Køreskole() throws Exception {
+public class Koreskole extends  UnicastRemoteObject implements Serializable {
+	public Koreskole() throws Exception {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -42,18 +42,18 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 	@Override
 	public boolean logIndAdmin(String adminBrugernavn, String adminKodeord) throws RemoteException { //tjekker om kombinationen er adminstrator.
 		if (adminBrugernavn.equals("s165477") && adminKodeord.equals("kodekode")||
-				adminBrugernavn.equals("s165477") && adminKodeord.equals("DS2019")) {
+				adminBrugernavn.equals("s175132") && adminKodeord.equals("DS2019")) {
 			System.out.println(sdf.format(new Date())+" ---------admin login------------- "+adminBrugernavn);
 			return true;
 		} else return false;
 	}
 
 	@Override
-	public boolean sletKøreskole(String adminBrugernavn, String adminKodeord, String køreskole_id) throws RemoteException { //admin kan slette køreskole
+	public boolean sletKøreskole(String adminBrugernavn, String adminKodeord, String køreskole_id) throws RemoteException { //admin kan slette koreskole
 		int i ;
 		if (logIndAdmin(adminBrugernavn, adminKodeord)){
 			i=jdbc.sletKøreskole(køreskole_id);
-			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" slet køreskole:"+ køreskole_id + " row(s) affected:" + i);
+			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" slet koreskole:"+ køreskole_id + " row(s) affected:" + i);
 			if (i>=1){
 				return true;
 			}
@@ -75,11 +75,11 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 	}
 
 	@Override
-	public boolean opretKøreskoleAdmin(String adminBrugernavn, String adminKodeord, Køreskole køreskole) throws RemoteException {  //en adminstrator kan oprette en køreskole
+	public boolean opretKøreskoleAdmin(String adminBrugernavn, String adminKodeord, Koreskole koreskole) throws RemoteException {  //en adminstrator kan oprette en koreskole
 		int i = 0;
 		if (logIndAdmin(adminBrugernavn, adminKodeord)) {
-			i=jdbc.opretkøreskole(køreskole);
-			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" opret køreskole:"+ køreskole.id + " row(s) affected:" + i);
+			i=jdbc.opretkøreskole(koreskole);
+			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" opret koreskole:"+ koreskole.id + " row(s) affected:" + i);
 			if (i<=1){
 				return true;
 			}
@@ -89,10 +89,10 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
 	@Override
 	public String getAlleKøreskoler(String adminBrugernavn, String adminKodeord) throws RemoteException { //en adminstrator kan hente alle køreskoler
-		ArrayList<Køreskole> køreskoler = new ArrayList<Køreskole>();
+		ArrayList<Koreskole> køreskoler = new ArrayList<Koreskole>();
 		if (logIndAdmin(adminBrugernavn, adminKodeord)) {
 			køreskoler=jdbc.getAlleKøreskoler();
-			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get alle køreskole row(s) affected:" + køreskoler.size());
+			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get alle koreskole row(s) affected:" + køreskoler.size());
 		}
 		String str = gson.toJson(køreskoler);
 		printJson(str);
@@ -186,11 +186,11 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 	@Override
 	public String getKøreskole(String brugernavn, String kodeord) throws RemoteException {
 		int i = 0;
-		Køreskole k = null;
+		Koreskole k = null;
 		String ejer = "";
 		if (logInd(brugernavn, kodeord)){
 			k = jdbc.getKøreskole(brugernavn);
-			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter informationer om sin køreskole: row(s) affected:" + k.id);
+			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter informationer om sin koreskole: row(s) affected:" + k.id);
 		}
 		System.out.println(gson.toJson(k));
 		return gson.toJson(k);
@@ -198,13 +198,13 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
 
 	@Override
-	public boolean opretKøreskole(String brugernavn, String kodeord, Køreskole køreskole) throws RemoteException { //en bruger kan oprette en køreskole for sig selv
+	public boolean opretKøreskole(String brugernavn, String kodeord, Koreskole koreskole) throws RemoteException { //en bruger kan oprette en koreskole for sig selv
 		int i;
 		if (logInd(brugernavn, kodeord)){
-			køreskole.id=brugernavn;
-			//køreskole.mail=ba.hentBrugerOffentligt(brugernavn).email;
-			i=jdbc.opretkøreskole(køreskole);
-			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" opretter køreskole: row(s) affected:" + i);
+			koreskole.id=brugernavn;
+			//koreskole.mail=ba.hentBrugerOffentligt(brugernavn).email;
+			i=jdbc.opretkøreskole(koreskole);
+			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" opretter koreskole: row(s) affected:" + i);
 			if (i>=1){
 				return true;
 			}

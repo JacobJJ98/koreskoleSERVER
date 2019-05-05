@@ -1,6 +1,5 @@
 package server;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,17 +31,17 @@ public class JDBC {
 		}
 	}
 
-	public int opretkøreskole(Køreskole køreskole) {
+	public int opretkøreskole(Koreskole koreskole) {
 		String s = "INSERT INTO koreskoler(koreskole_id, koreskolenavn, adresse, postnummer, telefonnummer, mail) values (?, ?, ?, ?, ?, ?);";
 		int updated = 0;
 		try {
 			PreparedStatement p = c.getConnection().prepareStatement(s);
-			p.setString(1, køreskole.id);
-			p.setString(2, køreskole.navn);
-			p.setString(3, køreskole.adresse);
-			p.setInt(4, køreskole.postnummer);
-			p.setInt(5, køreskole.telefonnummer);
-			p.setString(6, køreskole.mail);
+			p.setString(1, koreskole.id);
+			p.setString(2, koreskole.navn);
+			p.setString(3, koreskole.adresse);
+			p.setInt(4, koreskole.postnummer);
+			p.setInt(5, koreskole.telefonnummer);
+			p.setString(6, koreskole.mail);
 			updated = p.executeUpdate();
 
 		} catch (SQLException e) {
@@ -59,12 +58,12 @@ public class JDBC {
 
 	}
 
-	public Køreskole getKøreskole(String id) {
+	public Koreskole getKøreskole(String id) {
 		String s = "SELECT * FROM koreskoler where koreskole_id = ?;";
 		ResultSet rs = null;
-		Køreskole k=null;
+		Koreskole k=null;
 		try {
-			k = new Køreskole();
+			k = new Koreskole();
 			PreparedStatement p = c.getConnection().prepareStatement(s);
 			p.setString(1, id);
 			rs = p.executeQuery();
@@ -101,18 +100,18 @@ public class JDBC {
 			p.setString(3, t.korekort_type);
 			p.setInt(4, t.lynkursus);
 			p.setString(5, t.bilmarke);
-			p.setString(6, t.bilstørrelse);
-			p.setString(7, t.køn);
+			p.setString(6, t.bilstorrelse);
+			p.setString(7, t.kon);
 			p.setString(8, t.beskrivelse);
 
 			//uge dage
-			p.setInt(9, t.tilgængeligeDage.tilgængelig_mandag);
-			p.setInt(10, t.tilgængeligeDage.tilgængelig_tirsdag);
-			p.setInt(11, t.tilgængeligeDage.tilgængelig_onsdag);
-			p.setInt(12, t.tilgængeligeDage.tilgængelig_torsdag);
-			p.setInt(13, t.tilgængeligeDage.tilgængelig_fredag);
-			p.setInt(14, t.tilgængeligeDage.tilgængelig_lørdag);
-			p.setInt(15, t.tilgængeligeDage.tilgængelig_søndag);
+			p.setInt(9, t.tilgangeligeDage.tilgangelig_mandag);
+			p.setInt(10, t.tilgangeligeDage.tilgangelig_tirsdag);
+			p.setInt(11, t.tilgangeligeDage.tilgangelig_onsdag);
+			p.setInt(12, t.tilgangeligeDage.tilgangelig_torsdag);
+			p.setInt(13, t.tilgangeligeDage.tilgangelig_fredag);
+			p.setInt(14, t.tilgangeligeDage.tilgangelig_lordag);
+			p.setInt(15, t.tilgangeligeDage.tilgangelig_sondag);
 
 			i=p.executeUpdate();
 
@@ -171,18 +170,18 @@ public class JDBC {
 			ps.setString(2, nytTilbud.korekort_type);
 			ps.setInt(3, nytTilbud.lynkursus);
 			ps.setString(4, nytTilbud.bilmarke);
-			ps.setString(5, nytTilbud.bilstørrelse);
-			ps.setString(6, nytTilbud.køn);
+			ps.setString(5, nytTilbud.bilstorrelse);
+			ps.setString(6, nytTilbud.kon);
 			ps.setString(7, nytTilbud.beskrivelse);
 
 			//-------------tilgængelige dage-----------
-			ps.setInt(8, nytTilbud.tilgængeligeDage.tilgængelig_mandag);
-			ps.setInt(9, nytTilbud.tilgængeligeDage.tilgængelig_tirsdag);
-			ps.setInt(10, nytTilbud.tilgængeligeDage.tilgængelig_onsdag);
-			ps.setInt(11, nytTilbud.tilgængeligeDage.tilgængelig_torsdag);
-			ps.setInt(12, nytTilbud.tilgængeligeDage.tilgængelig_fredag);
-			ps.setInt(13, nytTilbud.tilgængeligeDage.tilgængelig_lørdag);
-			ps.setInt(14, nytTilbud.tilgængeligeDage.tilgængelig_søndag);
+			ps.setInt(8, nytTilbud.tilgangeligeDage.tilgangelig_mandag);
+			ps.setInt(9, nytTilbud.tilgangeligeDage.tilgangelig_tirsdag);
+			ps.setInt(10, nytTilbud.tilgangeligeDage.tilgangelig_onsdag);
+			ps.setInt(11, nytTilbud.tilgangeligeDage.tilgangelig_torsdag);
+			ps.setInt(12, nytTilbud.tilgangeligeDage.tilgangelig_fredag);
+			ps.setInt(13, nytTilbud.tilgangeligeDage.tilgangelig_lordag);
+			ps.setInt(14, nytTilbud.tilgangeligeDage.tilgangelig_sondag);
 
 			//-------------på id nr----------------
 			ps.setInt(15, gammelt_tilbuds_id);
@@ -281,17 +280,17 @@ public class JDBC {
 		return tilbud;
 	}
 
-	public ArrayList<Køreskole> getAlleKøreskoler(){
+	public ArrayList<Koreskole> getAlleKøreskoler(){
 
 		String s = "SELECT * FROM koreskoler;";
 		ResultSet rs = null;
-		ArrayList<Køreskole> køreskoler = new ArrayList<Køreskole>();
+		ArrayList<Koreskole> køreskoler = new ArrayList<Koreskole>();
 		try {
 			PreparedStatement p = c.getConnection().prepareStatement(s);
 			rs = p.executeQuery();
 
 			while(rs.next()) {
-				Køreskole k = køreskoleBuilder(rs);
+				Koreskole k = køreskoleBuilder(rs);
 				køreskoler.add(k);
 			}
 		} catch (Exception e) {
@@ -403,18 +402,18 @@ public class JDBC {
 			t.korekort_type = rs.getString(4);
 			t.lynkursus = rs.getInt(5);
 			t.bilmarke = rs.getString(6);
-			t.bilstørrelse = rs.getString(7);
-			t.køn = rs.getString(8);
+			t.bilstorrelse = rs.getString(7);
+			t.kon = rs.getString(8);
 
 			//-----------------dage------------------//
-			t.tilgængeligeDage = new TilgængeligeDage();
-			t.tilgængeligeDage.tilgængelig_mandag = rs.getInt(9);
-			t.tilgængeligeDage.tilgængelig_tirsdag = rs.getInt(10);
-			t.tilgængeligeDage.tilgængelig_onsdag = rs.getInt(11);
-			t.tilgængeligeDage.tilgængelig_torsdag = rs.getInt(12);
-			t.tilgængeligeDage.tilgængelig_fredag = rs.getInt(13);
-			t.tilgængeligeDage.tilgængelig_lørdag = rs.getInt(14);
-			t.tilgængeligeDage.tilgængelig_søndag = rs.getInt(15);
+			t.tilgangeligeDage = new TilgangeligeDage();
+			t.tilgangeligeDage.tilgangelig_mandag = rs.getInt(9);
+			t.tilgangeligeDage.tilgangelig_tirsdag = rs.getInt(10);
+			t.tilgangeligeDage.tilgangelig_onsdag = rs.getInt(11);
+			t.tilgangeligeDage.tilgangelig_torsdag = rs.getInt(12);
+			t.tilgangeligeDage.tilgangelig_fredag = rs.getInt(13);
+			t.tilgangeligeDage.tilgangelig_lordag = rs.getInt(14);
+			t.tilgangeligeDage.tilgangelig_sondag = rs.getInt(15);
 			t.beskrivelse=rs.getString(16);
 			return t;
 		} catch (Exception e){
@@ -424,10 +423,10 @@ public class JDBC {
 
 	}
 
-	private Køreskole køreskoleBuilder(ResultSet rs) {
-		Køreskole k;
+	private Koreskole køreskoleBuilder(ResultSet rs) {
+		Koreskole k;
 		try {
-			k = new Køreskole();
+			k = new Koreskole();
 			k.id = rs.getString(1);
 			k.navn = rs.getString(2);
 			k.adresse = rs.getString(3);
@@ -449,9 +448,9 @@ public class JDBC {
 			e.printStackTrace();
 		}
 		tilbudTilBrugere.tilbud=tilbudBuilder(rs, true);
-		Køreskole k;
+		Koreskole k;
 		try {
-			k = new Køreskole();
+			k = new Koreskole();
 			k.navn = rs.getString(17);
 			k.adresse = rs.getString(18);
 			k.postnummer = rs.getInt(19);
@@ -461,7 +460,7 @@ public class JDBC {
 			e.printStackTrace();
 			return null;
 		}
-		tilbudTilBrugere.køreskole=k;
+		tilbudTilBrugere.koreskole =k;
 		return tilbudTilBrugere;
 	}
 
