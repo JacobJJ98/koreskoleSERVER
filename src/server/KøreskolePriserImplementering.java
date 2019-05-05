@@ -95,7 +95,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 			System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get alle koreskole row(s) affected:" + køreskoler.size());
 		}
 		String str = gson.toJson(køreskoler);
-		printJson(str);
+//		printJson(str);
 		return str;
 	}
 	//----------------------------Admin slut-----------------------------//
@@ -178,7 +178,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 		}
 
 		String str = gson.toJson(tilbud);
-		printJson(str);
+//		printJson(str);
 		return str;
 	}
 
@@ -192,7 +192,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 			k = jdbc.getKøreskole(brugernavn);
 			System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter informationer om sin koreskole: row(s) affected:" + k.id);
 		}
-		System.out.println(gson.toJson(k));
+//		System.out.println(gson.toJson(k));
 		return gson.toJson(k);
 	}
 
@@ -224,7 +224,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 		tilbud=jdbc.getTilbudTilBrugereFraPostnummer(postnummer);
 		System.out.println(sdf.format(new Date())+" Tilbud hentet fra postnummer:"+postnummer+" antal tilbud:"+tilbud.size());
 		String str = gson.toJson(tilbud);
-		printJson(str);
+//		printJson(str);
 		return str;
 	}
 
@@ -233,7 +233,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 		ArrayList<TilbudTilBrugere> tilbud = jdbc.getAlleTilbud();
 		String str = gson.toJson(tilbud);
 		System.out.println(sdf.format(new Date())+" alle tilbud hentet. antal tilbud:"+tilbud.size());
-		printJson(str);
+//		printJson(str);
 		return str;
 	}
 
@@ -243,7 +243,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 		ArrayList<TilbudTilBrugere> tilbud = jdbc.getTilbudMellemPrisFraPostnummer(postnummer, minimumPris, maximumPris);
 		String str = gson.toJson(tilbud);
 		System.out.println(sdf.format(new Date())+" tilbud hentet fra postnummer:"+postnummer+". under kr:"+maximumPris+". antal tilbud:"+tilbud.size());
-		printJson(str);
+//		printJson(str);
 		return str;
 	}
 
