@@ -12,6 +12,7 @@ public interface KøreskolePriserInterface extends java.rmi.Remote {
 	boolean sletKøreskoleTilbud(String adminBrugernavn, String adminKodeord, int tilbud_id )						throws java.rmi.RemoteException;
 	boolean opretKøreskoleAdmin(String adminBrugernavn, String adminKodeord, Koreskole koreskole) 					throws java.rmi.RemoteException;
 	String getAlleKøreskoler(String adminBrugernavn, String adminKodeord)					 						throws java.rmi.RemoteException;
+	String getTilbudFraKøreskoler(String adminBrugernavn, String adminKodeord, String koreskoleid)					throws java.rmi.RemoteException;
 
 	
 	//----------koreskole------------//

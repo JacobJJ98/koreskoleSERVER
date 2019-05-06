@@ -45,7 +45,10 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
                 adminBrugernavn.equals("s175132") && adminKodeord.equals("DS2019")) {
             System.out.println(sdf.format(new Date())+" ---------admin login------------- "+adminBrugernavn);
             return true;
-        } else return false;
+        } else {
+            System.out.println(sdf.format(new Date())+" ---------admin login -FORKERT---- bruger:"+adminBrugernavn+"-kode:"+adminKodeord);
+            return false;
+        }
     }
 
     @Override
@@ -97,6 +100,17 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
         String str = gson.toJson(køreskoler);
 //		printJson(str);
         return str;
+    }
+
+    @Override
+    public String getTilbudFraKøreskoler(String adminBrugernavn, String adminKodeord, String koreskoleid) throws RemoteException {
+        if (logIndAdmin(adminBrugernavn, adminKodeord)){
+            ArrayList<Tilbud> tilbud =  jdbc.getTilbudFraKøreskole(koreskoleid);
+            System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get tilbud fra køreskole:" + koreskoleid + " row(s) affected:" + tilbud.size());
+            return gson.toJson(tilbud);
+        }
+
+        return null;
     }
     //----------------------------Admin slut-----------------------------//
 

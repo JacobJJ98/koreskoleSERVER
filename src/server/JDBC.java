@@ -387,7 +387,6 @@ public class JDBC {
 	}
 
 
-
 	private Tilbud tilbudBuilder(ResultSet rs, boolean tilKunder){
 		try {
 			Tilbud t = new Tilbud();
