@@ -47,13 +47,14 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
             return true;
         } else {
             System.out.println(sdf.format(new Date())+" ---------admin login -FORKERT---- bruger:"+adminBrugernavn+"-kode:"+adminKodeord);
+
             return false;
         }
     }
 
     @Override
     public boolean sletKøreskole(String adminBrugernavn, String adminKodeord, String køreskole_id) throws RemoteException { //admin kan slette koreskole
-        int i ;
+        int i = 0;
         if (logIndAdmin(adminBrugernavn, adminKodeord)){
             i=jdbc.sletKøreskole(køreskole_id);
             System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" slet koreskole:"+ køreskole_id + " row(s) affected:" + i);
@@ -61,6 +62,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
                 return true;
             }
         }
+        System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" slet koreskole:"+ køreskole_id + " row(s) affected:" + i);
         return false;
     }
 
@@ -74,6 +76,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
                 return true;
             }
         }
+        System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" slet tilbud:"+ tilbud_id + " row(s) affected:" + i);
         return false;
     }
 
@@ -95,10 +98,12 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
         ArrayList<Koreskole> køreskoler = new ArrayList<Koreskole>();
         if (logIndAdmin(adminBrugernavn, adminKodeord)) {
             køreskoler=jdbc.getAlleKøreskoler();
-            System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get alle koreskole row(s) affected:" + køreskoler.size());
         }
         String str = gson.toJson(køreskoler);
-//		printJson(str);
+
+        //		printJson(str);
+        System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get alle koreskole row(s) affected:" + køreskoler.size());
+
         return str;
     }
 
@@ -109,6 +114,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
             System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get tilbud fra køreskole:" + koreskoleid + " row(s) affected:" + tilbud.size());
             return gson.toJson(tilbud);
         }
+        System.out.println(sdf.format(new Date())+" adminBruger:"+adminBrugernavn+" get tilbud fra køreskole:" + koreskoleid + " row(s) affected:" + 0);
 
         return null;
     }
@@ -160,6 +166,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
             System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" prøver at redigere tilbud:"+ tilbud.id +" som tilhører:"+ ejer +" row(s) affected:" + i);
 
         }
+        System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" rediger tilbud:"+ tilbud.id +" row(s) affected:" + i);
         return false;
     }
 
@@ -179,6 +186,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
             }
             System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" prøver at slette tilbud:"+ tilbudID +" som tilhører:"+ ejer +" row(s) affected:" + slettet);
         }
+        System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" slet tilbud:"+ tilbudID +" row(s) affected:" + slettet);
         return false;
     }
 
@@ -193,7 +201,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
         }
 
         String str = gson.toJson(tilbud);
-//		printJson(str);
+        System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" henter sine tilbud: row(s) affected:" + tilbud.size());
         return str;
     }
 
@@ -214,7 +222,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
 
     @Override
     public boolean opretKøreskole(String brugernavn, String kodeord, Koreskole koreskole) throws RemoteException { //en bruger kan oprette en koreskole for sig selv
-        int i;
+        int i = 0;
         if (logInd(brugernavn, kodeord)){
             koreskole.id=brugernavn;
             //koreskole.mail=ba.hentBrugerOffentligt(brugernavn).email;
@@ -224,6 +232,7 @@ public class KøreskolePriserImplementering extends UnicastRemoteObject implemen
                 return true;
             }
         }
+        System.out.println(sdf.format(new Date())+" bruger:"+brugernavn+" opretter koreskole: row(s) affected:" + i);
         return false;
     }
 
